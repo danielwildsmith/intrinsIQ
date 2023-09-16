@@ -38,7 +38,10 @@ def getCompanies():
 
     else:
         print('Failed to retrieve the webpage.')
-        
+
+    companyList =[ticker.replace('.', '-') for ticker in companyList]
+
+
     return companyList
 
 def loadStockPriceData(companyList):
