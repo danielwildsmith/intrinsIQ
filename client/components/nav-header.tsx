@@ -1,23 +1,33 @@
+"use client"
+
 import { InputGroup, InputLeftElement, Input } from "@chakra-ui/input"
 import { SearchIcon} from '@chakra-ui/icons'
-import { Flex } from "@chakra-ui/layout"
+import { Box, Flex, HStack, Stack } from "@chakra-ui/layout"
 import Link from "next/link"
+import { Image } from "@chakra-ui/react"
 
 export const NavHeader = () => {
     return (
         <>
-            <Flex fontSize={'40px'} mb={3} pt={10}>
-                <Link href={'/'}>
-                    <span style={{color: '#00CC00'}}>Intrins</span>
-                    <span style={{color: '#FFFFFF'}}>IQ</span>
-                </Link>
+            <Flex w={'100%'} flexDir={'column'}>
+                <Flex fontSize={'40px'} mb={3} pt={10} justifyContent={'center'}>
+                    <Link href={'/'}>
+                        <span style={{color: '#00CC00'}}>Intrins</span>
+                        <span style={{color: '#FFFFFF'}}>IQ</span>
+                    </Link>
+                </Flex>
+                <Flex w={'100%'} gap={3} justifyContent={'center'}>
+                    <InputGroup maxW={{base: '100%', md: '40%'}}>
+                        <InputLeftElement pointerEvents='none'>
+                            <SearchIcon color='#28282B' />
+                        </InputLeftElement>
+                        <Input ml={5} placeholder='Search APPL or Apple' bg={'#FFFFFF'} color={'#28282B'} borderRadius={16}/>
+                    </InputGroup>
+                    <Box boxSize='30px' mt={1} _hover={{cursor: 'pointer'}}>
+                        <Image src='/leaderBoardIcon.png' alt='Leaderboard icon' />
+                    </Box>
+                </Flex>
             </Flex>
-            <InputGroup maxW={{base: '100%', md: '40%'}}>
-                <InputLeftElement pointerEvents='none'>
-                    <SearchIcon color='#28282B' />
-                </InputLeftElement>
-                <Input ml={5} placeholder='Search APPL or Apple' bg={'#FFFFFF'} color={'#28282B'} borderRadius={16}/>
-            </InputGroup>
         </>
     )
     
