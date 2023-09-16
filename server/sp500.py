@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import yfinance as yf
 from db import StockPrices
-from datetime import datetime
 
 def getCompanies():
     companyList = []
