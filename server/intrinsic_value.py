@@ -34,12 +34,12 @@ def calculateIntrinsicValue(company):
     stock = yf.Ticker(ticker_symbol)
     cashflow_statement = stock.cashflow
 
+
     # Extract the most recent free cash flow value
     most_recent_date = cashflow_statement.columns[0]  # Assuming the most recent date is the first column
     free_cashflow = cashflow_statement.loc['Free Cash Flow', most_recent_date]
-    # print(f'free cashflow is: {free_cashflow}')
+    #print(f'free cashflow is: {free_cashflow}')
     # 2. get growth rates (EPS next 5 years) from finviz
-    # look at finviz api
 
     # be more conservative as growth rates continue
 
@@ -49,12 +49,10 @@ def calculateIntrinsicValue(company):
 
     growth_rate_prct = stock_fundament['EPS next 5Y'] # returns a percentage
 
+    negative_growth = False
     if growth_rate_prct == '-': # use inflation rate when there's a dash
-        growth_rate_1to5 = 0.0328
-        # print(f'growth rate years 1 to 5 is: {growth_rate_1to5}')
-        growth_rate_6to10 = 0.03282 
-        # print(f'growth rate years 6 to 10 is: {growth_rate_6to10}')
-        growth_rate_11to20 = 0.0328
+        negative_growth = True # use for ltr if statement
+        filler_growth_rate = 0.0328
     else:
         # Remove the '%' sign and convert the string to a float
         growth_rate_1to5 = float(growth_rate_prct.strip('%')) / 100
@@ -84,9 +82,12 @@ def calculateIntrinsicValue(company):
     # get beta from finviz
     beta_string = stock_fundament['Beta'] # returns a string
 
-    # convert the string to a float
-    beta = float(beta_string)
-    # print(f'beta is: {beta}')
+    if beta_string == '-':
+        beta = 1.7
+    else:
+        # convert the string to a float
+        beta = float(beta_string)
+        # print(f'beta is: {beta}')
 
     if beta<0.8:
         discount_rate = 0.05
@@ -107,46 +108,58 @@ def calculateIntrinsicValue(company):
 
     discount_factor = 1/(1+discount_rate)
     # print(f'discount rate is: {discount_rate}')
-    # print(f'discount factor is: {discount_factor}')
+    #print(f'discount factor is: {discount_factor}')
 
 
     # 4. find 20 year discounted cashflow model (DCF)
+    if negative_growth == True:
+        final_dcf = 0
+        for i in range(1, 21):
+            annual_dcf = free_cashflow * ((1 + filler_growth_rate) ** i) * ((discount_factor) ** i)
+            final_dcf += annual_dcf
+    else:
+        final_dcf = 0
+        for i in range (1,21):
+            if i < 5:
+                annual_dcf = free_cashflow * ((1 + growth_rate_1to5) ** i) * ((discount_factor) ** i)
+                final_dcf += annual_dcf
+            elif i == 5:
+                annual_dcf = free_cashflow * ((1 + growth_rate_1to5) ** i) * ((discount_factor) ** i)
+                cf_5 = free_cashflow * ((1 + growth_rate_1to5) ** i)
+                final_dcf += annual_dcf
+            elif 6 <= i < 10:
+                annual_dcf = cf_5 * ((1 + growth_rate_6to10) ** (i - 5)) * ((discount_factor) ** i)
+                final_dcf += annual_dcf
+            elif i == 10:
+                annual_dcf = cf_5 * ((1 + growth_rate_6to10) ** (i - 5)) * ((discount_factor) ** i)
+                cf_10 = cf_5 * ((1 + growth_rate_6to10) ** (i - 5))
+                final_dcf += annual_dcf
+            elif 11 <= i < 21:
+                annual_dcf = cf_10 * ((1 + growth_rate_11to20) ** (i - 10)) * ((discount_factor) ** i)
+                final_dcf += annual_dcf
 
-    final_dcf = 0
-    for i in range (1,21):
-        if i < 5:
-            annual_dcf = free_cashflow * ((1 + growth_rate_1to5) ** i) * ((discount_factor) ** i)
-            final_dcf += annual_dcf
-        elif i == 5:
-            annual_dcf = free_cashflow * ((1 + growth_rate_1to5) ** i) * ((discount_factor) ** i)
-            cf_5 = free_cashflow * ((1 + growth_rate_1to5) ** i)
-            final_dcf += annual_dcf
-        elif 6 <= i < 10:
-            annual_dcf = cf_5 * ((1 + growth_rate_6to10) ** (i - 5)) * ((discount_factor) ** i)
-            final_dcf += annual_dcf
-        elif i == 10:
-            annual_dcf = cf_5 * ((1 + growth_rate_6to10) ** (i - 5)) * ((discount_factor) ** i)
-            cf_10 = cf_5 * ((1 + growth_rate_6to10) ** (i - 5))
-            final_dcf += annual_dcf
-        elif 11 <= i < 21:
-            annual_dcf = cf_10 * ((1 + growth_rate_11to20) ** (i - 10)) * ((discount_factor) ** i)
-            final_dcf += annual_dcf
-
-    # print(f'final dcf is: {final_dcf}')
+    #print(f'final dcf is: {final_dcf}')
 
     # 5. get cash and cash equivalents + short term investments from yf
     balance_sheet = stock.balance_sheet
+
+    #if ticker_symbol == 'AXP':
+     #   print(balance_sheet)
+
     try:
         total_cash = balance_sheet.loc['Cash Cash Equivalents And Short Term Investments', most_recent_date]
-    except:
-        total_cash = balance_sheet.loc["Cash, Cash Equivalents & Federal Funds Sold", most_recent_date]
-        
-    total_cash = balance_sheet.loc['Cash Cash Equivalents And Short Term Investments', most_recent_date]
-    # print(f'total cash is: {total_cash}')
+    except KeyError:
+        try:
+            total_cash = balance_sheet.loc["Cash And Cash Equivalents", most_recent_date]
+        except KeyError:
+            total_cash = None
+            print('another key error')
+    #total_cash = balance_sheet.loc['Cash Cash Equivalents And Short Term Investments', most_recent_date]
+    #print(f'total cash is: {total_cash}')
 
     # 6. get total debt from yf
     total_debt = balance_sheet.loc['Total Debt', most_recent_date]
-    # print(f'total debt is: {total_debt}')
+    #print(f'total debt is: {total_debt}')
 
     # 7. get number of shares outstanding
     shares_chart = stock.get_shares_full(start="2022-01-01", end=None)
@@ -154,7 +167,7 @@ def calculateIntrinsicValue(company):
     # Extract the shares outstanding from the last row
     last_row = shares_chart.iloc[-1]
     shares_outstanding = last_row  # no need to specify index bc it's not a df, it's a series
-    # print(f'shares outstanding is: {shares_outstanding}')
+    #print(f'shares outstanding is: {shares_outstanding}')
 
     # 8. find intrinsic value
     intrinsic_value = (final_dcf + total_cash - total_debt) / shares_outstanding
