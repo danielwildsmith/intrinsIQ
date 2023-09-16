@@ -10,6 +10,9 @@ class Task(Model):
 
     class Meta:
         database = db  # Assign the database connection to the model
+        
+# class FundamentalVariables(Model):
+    
 
 db.connect()
 print('Connected to db.')
