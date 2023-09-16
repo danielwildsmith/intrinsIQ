@@ -5,6 +5,7 @@ from db import IntrinsicValues
 companies = getCompanies()
 companies.remove('ALL')
 companies.remove('AXP')
+companies.remove('BAC')
 # some companies have different column names and giving us problems...
 # ALL, AXP
 
