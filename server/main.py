@@ -5,7 +5,7 @@ from db import IntrinsicValues
 companies = getCompanies()
 companies.remove('MNST')
 companies.remove('MPWR')
-#companies.remove('BAC')
+companies.remove('ISRG')
 # some companies have different column names and giving us problems...
 # ALL, AXP
 
@@ -21,4 +21,4 @@ for company in companies:
     count += 1
 
 # Used to load the database with the stock prices over the last 5 years:
-# print(loadStockPriceData(getCompanies()))
+print(loadStockPriceData(getCompanies()))
