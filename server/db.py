@@ -1,4 +1,4 @@
-from peewee import Model, SqliteDatabase, CompositeKey, CharField, DoubleField, DateTimeField, BooleanField
+from peewee import Model, SqliteDatabase, CompositeKey, CharField, DoubleField
 
 # Define an SQLite database connection
 db = SqliteDatabase('mydatabase.db')
@@ -13,10 +13,15 @@ class StockPrices(Model):
         primary_key = CompositeKey('company', 'date')
         database = db  # Assign the database connection to the model
     
-# class FundamentalVariables(Model):
+class IntrinsicValues(Model):
+    company = CharField()
+    intrinsicValue = DoubleField()
     
+    class Meta:
+        primary_key = CompositeKey('company')
+        database = db  # Assign the database connection to the model
 
 db.connect()
 print('Connected to db.')
-db.create_tables([StockPrices], safe=True)
+db.create_tables([StockPrices, IntrinsicValues], safe=True)
 db.close()
