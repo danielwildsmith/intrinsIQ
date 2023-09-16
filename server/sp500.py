@@ -1,5 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
+import yfinance as yf
+from db import StockPrices
+from datetime import datetime
 
 def getCompanies():
     companyList = []
@@ -38,3 +41,18 @@ def getCompanies():
         print('Failed to retrieve the webpage.')
         
     return companyList
+
+def loadStockPriceData(companyList):
+    for company in companyList:
+        data = yf.download(str(company), period="5y")
+        data.reset_index(inplace=True)
+        
+        dates = data['Date'].tolist()
+        prices = data['Close'].tolist()
+        
+        if len(dates) == len(prices):
+            for i in range(len(dates)):
+                newRecord = StockPrices.create(company=company, price=prices[i], date=str(dates[i])[:10])
+                newRecord.save()
+                
+                print(newRecord)
