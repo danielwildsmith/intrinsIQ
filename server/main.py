@@ -16,9 +16,9 @@ for company in companies:
     intrinsicValue = calculateIntrinsicValue(company)
     
     print(count,company, ': ', intrinsicValue)
-    newRow = IntrinsicValues(company=company, intrinsicValue=intrinsicValue)
+    newRow = IntrinsicValues.create(company=company, intrinsicValue=intrinsicValue)
     newRow.save()
     count += 1
 
 # Used to load the database with the stock prices over the last 5 years:
-print(loadStockPriceData(getCompanies()))
+#print(loadStockPriceData(getCompanies()))
