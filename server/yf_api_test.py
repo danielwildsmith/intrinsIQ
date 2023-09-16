@@ -1,3 +1,4 @@
+
 # calculate intrinsic value
 
 '''
@@ -6,14 +7,13 @@ Intrinsic value=(DCF + cash/short term investments - total debt)/# outstanding s
 All the things we need to collect for each individual stock:
 
 Present free cash flow (yfinance)
+Current Cash and short term investments (yfinance)
+Total debt (long term debt + short term debt) (yfinance)
 Growth rate (years 1 to 5) (EPS next 5 years from Finviz?)
 Growth rate (years 6 to 10) (#4 but cut in half)
 Growth rate (years 11 to 20) (~4% or 0.04, slight above inflation)
 Discount rate (get Beta from Finviz, and correlate it to table)
 Discount Factor, DF (1/(1+discount rate))
-DCF
-Current Cash and short term investments (yfinance)
-Total debt (long term debt + short term debt) (yfinance)
 Number of shares outstanding (Finviz)
 
 '''
@@ -23,37 +23,18 @@ import yfinance as yf
 from finvizfinance.quote import finvizfinance
 
 # hard coded all values from Apple. it works!
+# should be 106.01768821207243
 
 # 1. get free cash flow from last report
+free_cashflow = 111443000000
 
-# Replace 'AAPL' with the stock ticker symbol of the company you're interested in
-ticker_symbol = 'AAPL'
-
-# Get cashflow data for the company
-stock = yf.Ticker(ticker_symbol)
-cashflow_statement = stock.cashflow
-
-# Extract the most recent free cash flow value
-most_recent_date = cashflow_statement.columns[0]  # Assuming the most recent date is the first column
-free_cashflow = cashflow_statement.loc['Free Cash Flow', most_recent_date]
-print(f'free cashflow is: {free_cashflow}')
 # 2. get growth rates (EPS next 5 years) from finviz
 # look at finviz api
 
 # be more conservative as growth rates continue
-
-finviz_stock = finvizfinance(ticker_symbol)
-
-stock_fundament = finviz_stock.ticker_fundament()
-
-growth_rate_prct = stock_fundament['EPS next 5Y'] # returns a percentage
-
-# Remove the '%' sign and convert the string to a float
-growth_rate_1to5 = float(growth_rate_prct.strip('%')) / 100
-print(f'growth rate years 1 to 5 is: {growth_rate_1to5}')
+growth_rate_1to5 = 0.0637   # 6.37
 growth_rate_6to10 = growth_rate_1to5 / 2 # half original growth rate
-print(f'growth rate years 6 to 10 is: {growth_rate_6to10}')
-growth_rate_11to20 = 0.0328   # US average long term rate of inflation
+growth_rate_11to20 = 0.0328   # inflation rate
 
 # 3. get discount rate to find discount factor
 '''
@@ -71,14 +52,8 @@ b<0.8       5%
 b>1.6       9%
 '''
 
-# format a full if statement with above conditions ^
-
-# get beta from finviz
-beta_string = stock_fundament['Beta'] # returns a string
-
 # convert the string to a float
-beta = float(beta_string)
-print(f'beta is: {beta}')
+beta = 1.28
 
 if beta<0.8:
     discount_rate = 0.05
@@ -98,9 +73,6 @@ elif beta>=1.6:
     discount_rate = 0.09
 
 discount_factor = 1/(1+discount_rate)
-print(f'discount rate is: {discount_rate}')
-print(f'discount factor is: {discount_factor}')
-
 
 # 4. find 20 year discounted cashflow model (DCF)
 
@@ -124,26 +96,19 @@ for i in range (1,21):
         annual_dcf = cf_10 * ((1 + growth_rate_11to20) ** (i - 10)) * ((discount_factor) ** i)
         final_dcf += annual_dcf
 
-print(f'final dcf is: {final_dcf}')
-
 # 5. get cash and cash equivalents + short term investments from yf
-balance_sheet = stock.balance_sheet
-total_cash = balance_sheet.loc['Cash Cash Equivalents And Short Term Investments', most_recent_date]
-print(f'total cash is: {total_cash}')
+# TEST total_cash = 93025000000
+total_cash = 48304000000
 
 # 6. get total debt from yf
-total_debt = balance_sheet.loc['Total Debt', most_recent_date]
-print(f'total debt is: {total_debt}')
+# total_debt = 112723000000
+total_debt = 120069000000
 
 # 7. get number of shares outstanding
-shares_chart = stock.get_shares_full(start="2022-01-01", end=None)
 
-# Extract the shares outstanding from the last row
-last_row = shares_chart.iloc[-1]
-shares_outstanding = last_row  # no need to specify index bc it's not a df, it's a series
-print(f'shares outstanding is: {shares_outstanding}')
+shares_outstanding = 15630000000
 
 # 8. find intrinsic value
 intrinsic_value = (final_dcf + total_cash - total_debt) / shares_outstanding
-print(intrinsic_value)
+print(f'intrinsic value is: {intrinsic_value}')
 
