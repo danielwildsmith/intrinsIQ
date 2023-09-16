@@ -6,7 +6,7 @@ import { Box, Flex, HStack, Stack } from "@chakra-ui/layout"
 import Link from "next/link"
 import { Image } from "@chakra-ui/react"
 
-export const NavHeader = () => {
+export const NavHeader = ({path}: {path: string}) => {
     return (
         <>
             <Flex w={'100%'} flexDir={'column'}>
@@ -23,9 +23,14 @@ export const NavHeader = () => {
                         </InputLeftElement>
                         <Input ml={5} placeholder='Search APPL or Apple' bg={'#FFFFFF'} color={'#28282B'} borderRadius={16}/>
                     </InputGroup>
-                    <Box boxSize='30px' mt={1} _hover={{cursor: 'pointer'}}>
-                        <Image src='/leaderBoardIcon.png' alt='Leaderboard icon' />
-                    </Box>
+                    <Stack>
+                        <Box boxSize='30px' mt={1} _hover={{cursor: 'pointer'}} >
+                            <Link href={'/rankings'}>
+                                <Image src='/leaderBoardIcon.png' alt='Leaderboard icon' />
+                            </Link>
+                        </Box>
+                        <Box h={'1px'} borderBottom={path == '/rankings' ? '2px solid #FFD700' : ''}/>
+                    </Stack>
                 </Flex>
             </Flex>
         </>
