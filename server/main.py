@@ -1,3 +1,3 @@
-from sp500 import getCompanies
+from sp500 import getCompanies, loadStockPriceData
 
-print(getCompanies())
+print(loadStockPriceData(getCompanies()))
