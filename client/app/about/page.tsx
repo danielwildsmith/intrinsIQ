@@ -16,7 +16,7 @@ export default function AboutPage() {
                         About This Project
                     </Text>
                     <Text ml={4} fontSize={'lg'} mb={3.5}>
-                        IntrinsIQ calculates the intrinsic value of stocks within the S&P500 using a discounted cash flow model. Essentially, we are projecting the company’s future cash flows and discounting them to the present value.
+                        IntrinsIQ calculates the intrinsic value of stocks within the S&P500 using a discounted cash flow model. Essentially, we are projecting the future cash flows of the company and discounting them to the present value.
                     </Text>
                     <Box display={'flex'} ml={4} fontSize={'lg'} mb={3.5}>
                         <span>Formula:  </span>
@@ -60,7 +60,7 @@ export default function AboutPage() {
                         About The Team
                     </Text>
                     <Text ml={4} fontSize={'lg'} mb={3.5}>
-                        ShellHacks 2023 is the first ever hackathon for all of our members! We wanted to build something that is both useful and something that we'd be proud of.
+                        ShellHacks 2023 is the first ever hackathon for all of our members! We wanted to build something that is both useful and something that we would be proud of.
                     </Text>
                     <Link href={'https://www.linkedin.com/in/danielwildsmith/'} target="_blank" > 
                         <Text ml={12} fontSize={'lg'} mb={1} color="#33d778" _hover={{borderBottom: '1px solid #33d778'}} w={'fit-content'}>
