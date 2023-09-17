@@ -27,8 +27,8 @@ export const HomeHeader = ({path}: {path: string}) => {
 
     return (
         <>
-            <Flex w={'100%'} flexDir={'column'}>
-                <Flex fontSize={'40px'} fontWeight={'bold'} mb={3} pt={10} justifyContent={'center'}>
+            <Flex w={'100%'} flexDir={'column'} flexGrow={1}>
+                <Flex fontSize={'40px'} fontWeight={'bold'} mb={3} justifyContent={'center'}>
                     <Link href={'/'}>
                         <span style={{color: '#33d778'}}>Intrins</span>
                         <span style={{color: '#FFFFFF'}}>IQ</span>

@@ -44,14 +44,14 @@ export default function RankingsPage() {
                         </Box>
                     )}
                     {rankData[0] && (
-                        <Box h={`140px`} w={'90px'} bg={'white'} borderRadius={'10px'} display={'flex'} flexDir={'column'} justifyContent={'center'} gap={0.5}>
+                        <Box h={`140px`} w={'100px'} bg={'white'} borderRadius={'10px'} display={'flex'} flexDir={'column'} justifyContent={'center'} gap={0.5}>
                             <Text>1</Text> {/* This is hardcoded as 2 since we are directly accessing the second index */}
                             <Text>{rankData[0].company}</Text>
                             <Text color={'#33d778'}>+${rankData[0].rankValue.toFixed(2)}</Text>
                         </Box>
                     )}
                     {rankData[2] && (
-                        <Box h={`120px`} w={'90px'} bg={'#D9D9D9'} borderRadius={'10px'} display={'flex'} flexDir={'column'} justifyContent={'center'} gap={0.5}>
+                        <Box h={`120px`} w={'100px'} bg={'#D9D9D9'} borderRadius={'10px'} display={'flex'} flexDir={'column'} justifyContent={'center'} gap={0.5}>
                             <Text>3</Text> {/* This is hardcoded as 2 since we are directly accessing the second index */}
                             <Text>{rankData[2].company}</Text>
                             <Text color={'#33d778'}>+${rankData[2].rankValue.toFixed(2)}</Text>
