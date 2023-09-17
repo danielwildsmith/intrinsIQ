@@ -3,6 +3,11 @@ from peewee import Model, SqliteDatabase, CompositeKey, CharField, DoubleField
 # Define an SQLite database connection
 db = SqliteDatabase('mydatabase.db')
 
+def connectDB(db):
+    db.connect()
+    print('Connected to db.')
+    db.create_tables([StockPrices, IntrinsicValues], safe=True)
+    
 # Define your model(s)
 class StockPrices(Model):
     company = CharField()
@@ -20,8 +25,3 @@ class IntrinsicValues(Model):
     class Meta:
         primary_key = CompositeKey('company')
         database = db  # Assign the database connection to the model
-
-db.connect()
-print('Connected to db.')
-db.create_tables([StockPrices, IntrinsicValues], safe=True)
-db.close()
