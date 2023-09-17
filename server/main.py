@@ -3,8 +3,10 @@ from intrinsic_value import calculateIntrinsicValue
 from flask import Flask, jsonify
 from db import connectDB, db, StockPrices, IntrinsicValues
 from playhouse.shortcuts import model_to_dict
+from flask_cors import CORS
 
 app = Flask(__name__)
+cors = CORS(app)
 connectDB(db)
 
 @app.route('/stock/<company>', methods=['GET'])

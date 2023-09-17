@@ -11,7 +11,6 @@ export default function DynamicCompanyPage({ params }: { params: { company: stri
         </Flex>
         <RangeChart company={params.company}/>
       </main>
-      
     )
   }
   
