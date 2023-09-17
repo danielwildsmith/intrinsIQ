@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/nav-header"
 import {useState, useEffect} from "react";
 import axios from "axios";
 import { Box, Flex, Table, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import PageWrapper from "@/components/animations";
 
 export interface TableData {
     rank: string;
@@ -34,6 +35,7 @@ export default function RankingsPage() {
     if(rankData) {
         return (
             <>
+            <PageWrapper>
                 <PageHeader path="/rankings" />
                 <Flex mt={10} gap={0.25} align={'flex-end'} textAlign={'center'} justifyContent={'center'}>
                     {rankData[1] && (
@@ -84,6 +86,7 @@ export default function RankingsPage() {
                         </Tbody>
                     </Table>
                 </TableContainer>
+            </PageWrapper>
             </>
         )
     }

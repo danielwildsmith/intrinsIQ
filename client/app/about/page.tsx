@@ -1,5 +1,6 @@
 "use client"
 
+import PageWrapper from "@/components/animations";
 import { PageHeader } from "@/components/nav-header";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
@@ -7,6 +8,7 @@ import Link from "next/link";
 export default function AboutPage() {
     return (
         <>
+        <PageWrapper>
             <PageHeader path="/about" />
             <Box px={'250px'} mt={10} color={'white'}>
                     <Text fontSize={'2xl'}  borderBottom={'1px solid white'} w={'fit-content'} mb={2}>
@@ -81,6 +83,7 @@ export default function AboutPage() {
                     </Link>
                     
             </Box>
+        </PageWrapper>
         </>
     )
 }

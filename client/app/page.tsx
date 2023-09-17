@@ -1,11 +1,13 @@
 "use client"
 
+import PageWrapper from "@/components/animations"
 import { HomeHeader } from "@/components/nav-header"
 import { Box, Flex, Image, Text } from "@chakra-ui/react"
 import Link from "next/link"
 
 export default function Home() {
   return (
+    <PageWrapper>
     <main className="flex min-h-screen flex-col items-center justify-center">
       <Box h={'100%'} w={'100%'} display={'flex'} flexDir={'column'} justifyContent={'center'} pb={5}>
         <HomeHeader path="/"/>
@@ -21,5 +23,6 @@ export default function Home() {
         </Box>
       </Flex>
     </main>
+    </PageWrapper>
   )
 }
