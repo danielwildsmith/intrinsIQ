@@ -1,6 +1,7 @@
 import {useState, useEffect, useRef} from "react";
 import { createChart } from 'lightweight-charts';
 import axios from "axios";
+import { Flex, Heading } from "@chakra-ui/react";
 
 export interface StockDayData {
     date: string;
@@ -41,7 +42,7 @@ export const RangeChart = ({company}: {company: string}) => {
 
   useEffect(() => {
     if (stockData && chartContainerRef.current && intrinsicData) {
-      console.log(intrinsicData)
+      // console.log(intrinsicData)
       
       const chart = createChart(chartContainerRef.current, { width: 800, height: 400, grid: {
         horzLines: {
@@ -76,7 +77,7 @@ export const RangeChart = ({company}: {company: string}) => {
       });
 
       areaSeries.setData(formattedData);
-      console.log(intrinsicData[0].intrinsicValue)
+      // console.log(intrinsicData[0].intrinsicValue)
       //@ts-ignore
       intrinsicSeries.setData([{time: '2018-09-15', value: intrinsicData[0].intrinsicValue}, {time: '2023-09-15', value: intrinsicData[0].intrinsicValue}]);
 
@@ -86,3 +87,35 @@ export const RangeChart = ({company}: {company: string}) => {
 
   return <div ref={chartContainerRef} style={{ width: '800px', height: '400px', backgroundColor: 'transparent' }}></div>;
 };
+
+export const IntrinsicValueStat = ({company}: {company: string}) => {
+  const [intrinsicData, setIntrinsicData] = useState<IntrinsicData[] | null>(null);
+
+  const GetIntrinsicData = async () => {
+    try {
+      const res = await axios.get(`http://127.0.0.1:5000/intrinsic/${company}`);
+      setIntrinsicData(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    GetIntrinsicData();
+  }, []);
+
+
+  if(intrinsicData) {
+    const value = intrinsicData[0].intrinsicValue
+    console.log(value)
+    return (
+      <>
+        <Flex fontSize={'32px'} color={'white'} mr={2} alignItems={'center'} mt={2}>
+          <span style={{width: 'fit-content', fontWeight: 'bold'}}>Intrinsic Value: </span>
+          <Heading fontSize={'32px'} ml={2} color={'#33d778'} style={{color: Number(value) >= 0 ? '#33d778' : 'red'}}>${value.toFixed(2)}</Heading>
+        </Flex>
+      </>
+    )
+  }
+  return <></>
+}

@@ -1,6 +1,6 @@
 "use client"
 
-import { RangeChart } from "@/components/graph";
+import { IntrinsicValueStat, RangeChart } from "@/components/graph";
 import { PageHeader } from "@/components/nav-header";
 import { RankCard } from "@/components/rank";
 import { Flex, Heading } from "@chakra-ui/react";
@@ -13,7 +13,8 @@ export default function DynamicCompanyPage({ params }: { params: { company: stri
           <Heading fontSize={'32px'} color={'#FFFFFF'} mr={2}>{params.company}</Heading>
           <RankCard company={params.company}/>
         </Flex>
-          <RangeChart company={params.company}/>
+        <RangeChart company={params.company}/>
+        <IntrinsicValueStat company={params.company}/>
       </main>
     )
   }
