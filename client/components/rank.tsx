@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import axios from "axios";
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Heading } from "@chakra-ui/react";
 
 export interface RankData {
     company: string;

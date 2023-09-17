@@ -51,10 +51,11 @@ async def getRankingList():
             if mostRecentPriceQuery.exists():
                 mostRecentPrice = mostRecentPriceQuery.get().price  # Assuming your StockPrices model has a 'price' field
                 rankValue = record.intrinsicValue - mostRecentPrice
-                ranking_list.append({"company": company, "rankValue": rankValue})
+                ranking_list.append({"company": company, "rankValue": rankValue, "stockPrice": mostRecentPrice, "intrinsicValue": record.intrinsicValue})
             else:
                 print(f"No stock price found for {company}")
 
+        ranking_list = sorted(ranking_list, key=lambda x: x['rankValue'], reverse=True)  # Set reverse=True if you want it to be in descending order
         return jsonify(ranking_list)  # Serialize the data to JSON
     except IntrinsicValues.DoesNotExist:
         return jsonify({"error": "No instrinsic values found."})

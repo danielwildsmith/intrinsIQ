@@ -30,7 +30,7 @@ export const HomeHeader = ({path}: {path: string}) => {
             <Flex w={'100%'} flexDir={'column'}>
                 <Flex fontSize={'40px'} fontWeight={'bold'} mb={3} pt={10} justifyContent={'center'}>
                     <Link href={'/'}>
-                        <span style={{color: '#00CC00'}}>Intrins</span>
+                        <span style={{color: '#33d778'}}>Intrins</span>
                         <span style={{color: '#FFFFFF'}}>IQ</span>
                     </Link>
                 </Flex>
@@ -64,14 +64,17 @@ export const PageHeader = ({path}: {path: string}) => {
     
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
-        router.push(`/${query}`);
+        if(companiesSet.has(query))
+            router.push(`/${query}`);
+        else
+            router.push('/not-found');
     }
 
     return (
         <>
                 <Flex fontSize={'40px'} fontWeight={'bold'} mt={5} w='100%' pl={'60px'}>
                     <Link href={'/'}>
-                        <span style={{color: '#00CC00'}}>Intrins</span>
+                        <span style={{color: '#33d778'}}>Intrins</span>
                         <span style={{color: '#FFFFFF'}}>IQ</span>
                     </Link>
 
