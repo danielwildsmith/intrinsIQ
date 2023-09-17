@@ -35,8 +35,10 @@ export const RangeChart = ({company}: {company: string}) => {
       });
 
       areaSeries.setData(formattedData);
+
+      return () => chart.remove()
     }
   }, [stockData]);
 
-  return <div ref={chartContainerRef} style={{ width: '800px', height: '400px' }}></div>;
+  return <div ref={chartContainerRef} style={{ width: '800px', height: '400px', backgroundColor: 'transparent' }}></div>;
 };

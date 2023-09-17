@@ -63,6 +63,17 @@ async def getRankingList():
         return jsonify({"error": "Server error."}), 500
 
 
+@app.route('/list', methods=['GET'])
+async def getCompanyList():
+    try:
+        records = IntrinsicValues.select()
+        data = []
+        for record in records:
+            data.append(record.company)
+        return data # Serialize the data to JSON
+    except IntrinsicValues.DoesNotExist:
+        return "No companies found."
+
 if __name__ == '__main__':
     app.run()
 
