@@ -33,6 +33,34 @@ async def getIntrinsicValue(company):
     except IntrinsicValues.DoesNotExist:
         return "No data found for company: " + company
 
+# Return a list of rank values (intrinsic value - most recent stock price), sorted
+# {company: string, rankValue: double}
+# 
+@app.route('/rankingList', methods=['GET'])
+async def getRankingList():
+    try:
+        intrinsicValues = IntrinsicValues.select().order_by(IntrinsicValues.intrinsicValue.desc())
+        
+        ranking_list = []
+
+        for record in intrinsicValues:
+            company = record.company
+            mostRecentPriceQuery = StockPrices.select().where(StockPrices.company == str(company)).order_by(StockPrices.date.desc()).limit(1)
+            
+            # Ensure there's a most recent price record
+            if mostRecentPriceQuery.exists():
+                mostRecentPrice = mostRecentPriceQuery.get().price  # Assuming your StockPrices model has a 'price' field
+                rankValue = record.intrinsicValue - mostRecentPrice
+                ranking_list.append({"company": company, "rankValue": rankValue})
+            else:
+                print(f"No stock price found for {company}")
+
+        return jsonify(ranking_list)  # Serialize the data to JSON
+    except IntrinsicValues.DoesNotExist:
+        return jsonify({"error": "No instrinsic values found."})
+    except Exception as e:
+        print(e)  # Log the exception for debugging
+        return jsonify({"error": "Server error."}), 500
 
 
 if __name__ == '__main__':
