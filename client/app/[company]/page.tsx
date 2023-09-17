@@ -1,6 +1,7 @@
 "use client"
 
 import PageWrapper from "@/components/animations";
+import { Footer } from "@/components/footer";
 import { IntrinsicValueStat, RangeChart } from "@/components/graph";
 import { PageHeader } from "@/components/nav-header";
 import { RankCard } from "@/components/rank";
@@ -17,6 +18,8 @@ export default function DynamicCompanyPage({ params }: { params: { company: stri
           </Flex>
           <RangeChart company={params.company}/>
           <IntrinsicValueStat company={params.company}/>
+
+          <Footer />
         </main>
       </PageWrapper>
       

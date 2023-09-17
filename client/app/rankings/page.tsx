@@ -5,6 +5,7 @@ import {useState, useEffect} from "react";
 import axios from "axios";
 import { Box, Flex, Table, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import PageWrapper from "@/components/animations";
+import { Footer } from "@/components/footer";
 
 export interface TableData {
     rank: string;
@@ -61,9 +62,9 @@ export default function RankingsPage() {
                     )}
 
                 </Flex>
-                <TableContainer mt={10} color={'white'} px={'400px'} >
+                <TableContainer mt={10} color={'white'} px={'400px'} pb={12}>
                     <Table variant='simple' border={'2px solid white'} >
-                        <TableCaption>Top 20 Sustainable Companies</TableCaption>
+                        <TableCaption color={'#D9D9D9'}>Top 20 Sustainable Companies</TableCaption>
                         <Thead>
                             <Tr >
                                 <Th color={'#FFD700'}>Rank</Th>
@@ -86,6 +87,7 @@ export default function RankingsPage() {
                         </Tbody>
                     </Table>
                 </TableContainer>
+                <Footer />
             </PageWrapper>
             </>
         )
