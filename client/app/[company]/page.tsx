@@ -1,5 +1,6 @@
 "use client"
 
+import { RangeChart } from "@/components/graph";
 import { Flex, Heading } from "@chakra-ui/react";
 
 export default function DynamicCompanyPage({ params }: { params: { company: string } }) {
@@ -8,9 +9,7 @@ export default function DynamicCompanyPage({ params }: { params: { company: stri
         <Flex mt={10}>
           <Heading fontSize={'32px'} color={'#FFFFFF'}>{params.company}</Heading>
         </Flex>
-        <Flex>
-          
-        </Flex>
+        <RangeChart company={params.company}/>
       </main>
       
     )
