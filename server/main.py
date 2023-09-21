@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 from db import connectDB, db, StockPrices, IntrinsicValues
 from playhouse.shortcuts import model_to_dict
 from flask_cors import CORS
-from seed import seedDB
+# from seed import seedDB
 
 app = Flask(__name__)
 cors = CORS(app)
