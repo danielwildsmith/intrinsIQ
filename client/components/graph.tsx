@@ -2,7 +2,7 @@ import {useState, useEffect, useRef} from "react";
 import { createChart } from 'lightweight-charts';
 import axios from "axios";
 import { Flex, Heading } from "@chakra-ui/react";
-import { serverHost } from "@/app/page";
+import { serverHost } from "@/app/connect";
 
 export interface StockDayData {
     date: string;

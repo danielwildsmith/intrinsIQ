@@ -6,7 +6,7 @@ import axios from "axios";
 import { Box, Flex, Table, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import PageWrapper from "@/components/animations";
 import { Footer } from "@/components/footer";
-import { serverHost } from "../page";
+import { serverHost } from "../connect";
 
 export interface TableData {
     rank: string;

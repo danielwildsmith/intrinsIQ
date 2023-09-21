@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
 import axios from "axios";
 import { Heading } from "@chakra-ui/react";
-import { serverHost } from "@/app/page";
+import { serverHost } from "@/app/connect";
 
 export interface RankData {
     company: string;
