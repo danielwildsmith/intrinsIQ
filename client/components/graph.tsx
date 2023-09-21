@@ -94,7 +94,7 @@ export const IntrinsicValueStat = ({company}: {company: string}) => {
 
   const GetIntrinsicData = async () => {
     try {
-      const res = await axios.get(`http://127.0.0.1:5000/intrinsic/${company}`);
+      const res = await axios.get(`${serverHost}/intrinsic/${company}`);
       setIntrinsicData(res.data);
     } catch (error) {
       console.error(error);
