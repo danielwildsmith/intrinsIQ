@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react";
 import axios from "axios";
 import { Heading } from "@chakra-ui/react";
+import { serverHost } from "@/app/page";
 
 export interface RankData {
     company: string;
@@ -12,7 +13,7 @@ export const RankCard = ({company}: {company: string}) => {
 
     const getRankData = async () => {
         try {
-          const res = await axios.get(`http://127.0.0.1:5000/rankingList`);
+          const res = await axios.get(`${serverHost}/rankingList`);
           setRankData(res.data);
         } catch (error) {
           console.error(error);

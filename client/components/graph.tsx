@@ -2,6 +2,7 @@ import {useState, useEffect, useRef} from "react";
 import { createChart } from 'lightweight-charts';
 import axios from "axios";
 import { Flex, Heading } from "@chakra-ui/react";
+import { serverHost } from "@/app/page";
 
 export interface StockDayData {
     date: string;
@@ -19,7 +20,7 @@ export const RangeChart = ({company}: {company: string}) => {
 
   const getStockData = async () => {
     try {
-      const res = await axios.get(`http://127.0.0.1:5000/stock/${company}`);
+      const res = await axios.get(`${serverHost}/stock/${company}`);
       setStockData(res.data);
     } catch (error) {
       console.error(error);
@@ -28,7 +29,7 @@ export const RangeChart = ({company}: {company: string}) => {
 
   const GetIntrinsicData = async () => {
     try {
-      const res = await axios.get(`http://127.0.0.1:5000/intrinsic/${company}`);
+      const res = await axios.get(`${serverHost}/intrinsic/${company}`);
       setIntrinsicData(res.data);
     } catch (error) {
       console.error(error);
