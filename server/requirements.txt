@@ -2,7 +2,7 @@ python-dotenv
 peewee
 yfinance
 finvizfinance
-Flask
+Flask[async]
 Flask-Cors
 requests
 beautifulsoup4

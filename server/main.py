@@ -9,6 +9,10 @@ cors = CORS(app)
 connectDB()
 # seedDB()
 
+@app.route('/')
+def hello_world():
+    return 'IntrinsIQ API'
+
 @app.route('/stock/<company>', methods=['GET'])
 async def getStock(company):
     print(company)
