@@ -7,3 +7,4 @@ Flask-Cors
 requests
 beautifulsoup4
 gunicorn
+mysql-connector-python
