@@ -1,0 +1,8 @@
+python-dotenv
+peewee
+yfinance
+finvizfinance
+Flask
+Flask-Cors
+requests
+beautifulsoup4
