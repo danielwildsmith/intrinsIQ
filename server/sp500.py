@@ -1,7 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 import yfinance as yf
-from db import StockPrices
+from db import StockPrices, db
+from peewee import IntegrityError
+import peewee
 
 def getCompanies():
     companyList = []
@@ -45,16 +47,28 @@ def getCompanies():
     return companyList
 
 def loadStockPriceData(companyList):
+    i = 0
     for company in companyList:
+        i += 1
+        print(i, company)
         data = yf.download(str(company), period="5y")
         data.reset_index(inplace=True)
-        
-        dates = data['Date'].tolist()
-        prices = data['Close'].tolist()
-        
-        if len(dates) == len(prices):
-            for i in range(len(dates)):
-                newRecord = StockPrices.create(company=company, price=prices[i], date=str(dates[i])[:10])
-                newRecord.save()
-                
-                print(newRecord)
+
+        # Prepare a list of dictionaries for batch insert/update
+        records = []
+        for index, row in data.iterrows():
+            record = {
+                'company': company,
+                'price': row['Close'],
+                'date': str(row['Date'])[:10]
+            }
+            records.append(record)
+
+        # Replace records in smaller transactions
+        batch_size = 100  # Adjust this value as needed
+        for batch_start in range(0, len(records), batch_size):
+            batch_records = records[batch_start: batch_start + batch_size]
+            with db.atomic():
+                for record in batch_records:
+                    query = StockPrices.replace(**record)
+                    query.execute()

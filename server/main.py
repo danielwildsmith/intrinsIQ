@@ -2,12 +2,11 @@ from flask import Flask, jsonify
 from db import connectDB, db, StockPrices, IntrinsicValues
 from playhouse.shortcuts import model_to_dict
 from flask_cors import CORS
-# from seed import seedDB
+from peewee import JOIN, fn
 
 app = Flask(__name__)
 cors = CORS(app)
 connectDB()
-# seedDB()
 
 @app.route('/')
 def hello_world():
@@ -39,34 +38,35 @@ async def getIntrinsicValue(company):
 
 # Return a list of rank values (intrinsic value - most recent stock price), sorted
 # {company: string, rankValue: double}
-# 
 @app.route('/rankingList', methods=['GET'])
 async def getRankingList():
     try:
-        intrinsicValues = IntrinsicValues.select().order_by(IntrinsicValues.intrinsicValue.desc())
-        
+        # Joining the two tables and ordering by intrinsicValue descending
+        query = (IntrinsicValues
+         .select(IntrinsicValues, StockPrices.price.alias('mostRecentPrice'))
+         .join(StockPrices, JOIN.LEFT_OUTER, on=(IntrinsicValues.company == StockPrices.company))
+         .where(StockPrices.date == StockPrices.select(fn.MAX(StockPrices.date).alias('most_recent_date'))
+                                              .where(IntrinsicValues.company == StockPrices.company))
+         .order_by(IntrinsicValues.intrinsicValue.desc())
+        )
+
         ranking_list = []
+        for record in query.dicts():  # Use dicts() to iterate over as dictionaries
+            rankValue = record['intrinsicValue'] - record['mostRecentPrice']
+            ranking_list.append({
+                "company": record['company'],
+                "rankValue": rankValue,
+                "stockPrice": record['mostRecentPrice'],
+                "intrinsicValue": record['intrinsicValue']
+            })
 
-        for record in intrinsicValues:
-            company = record.company
-            mostRecentPriceQuery = StockPrices.select().where(StockPrices.company == str(company)).order_by(StockPrices.date.desc()).limit(1)
-            
-            # Ensure there's a most recent price record
-            if mostRecentPriceQuery.exists():
-                mostRecentPrice = mostRecentPriceQuery.get().price  # Assuming your StockPrices model has a 'price' field
-                rankValue = record.intrinsicValue - mostRecentPrice
-                ranking_list.append({"company": company, "rankValue": rankValue, "stockPrice": mostRecentPrice, "intrinsicValue": record.intrinsicValue})
-            else:
-                print(f"No stock price found for {company}")
-
-        ranking_list = sorted(ranking_list, key=lambda x: x['rankValue'], reverse=True)  # Set reverse=True if you want it to be in descending order
-        return jsonify(ranking_list)  # Serialize the data to JSON
+        ranking_list = sorted(ranking_list, key=lambda x: x['rankValue'], reverse=True)
+        return jsonify(ranking_list)
     except IntrinsicValues.DoesNotExist:
         return jsonify({"error": "No instrinsic values found."})
     except Exception as e:
         print(e)  # Log the exception for debugging
         return jsonify({"error": "Server error."}), 500
-
 
 @app.route('/list', methods=['GET'])
 async def getCompanyList():
