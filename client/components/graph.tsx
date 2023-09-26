@@ -21,7 +21,7 @@ export const RangeChart = ({company}: {company: string}) => {
   const getStockData = async () => {
     try {
       const res = await axios.get(`${serverHost}/stock/${company}`);
-      setStockData(res.data);
+      setStockData(res.data.slice(-365));
     } catch (error) {
       console.error(error);
     }
