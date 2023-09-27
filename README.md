@@ -18,5 +18,7 @@ Some of them include:
 We also suffered from other limitations, including the occasional occurrence of incomplete or uncleanable data. 
 In these few cases, we developed conservative approximations or simply omitted the data point.
 
+Here is a [video](https://www.youtube.com/watch?v=M4zhRTAnLeE) explaining the features development process behind IntrinsIQ.
+
 _Disclaimer: IntrinsIQ is not a financial advisor, nor is this meant to resemble any form of financial advice. 
 Please consult a certified financial advisor before making any investment decisions and carry out your own due diligence._
