@@ -1,11 +1,12 @@
+from dotenv import load_dotenv
+load_dotenv()
 from flask import Flask
-from db import db
-from flask_cors import CORS
 import json
 from datetime import datetime, timedelta
+import os
 
 app = Flask(__name__)
-cors = CORS(app)
+from db import db
 
 @app.route('/')
 def hello_world():
@@ -32,4 +33,4 @@ async def getRankings():
     return json.dumps(documents, default=str)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, port=os.getenv("PORT", default=5000))

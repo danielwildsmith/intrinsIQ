@@ -6,3 +6,5 @@ Flask-Cors
 requests
 beautifulsoup4
 pymongo
+gunicorn
+gevent

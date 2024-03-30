@@ -54,5 +54,3 @@ def updateDB():
     for index, item in enumerate(sorted(rankValues, key=lambda x: x['rankValue'], reverse=True)):
         print(item['company'], item['rankValue'], index + 1)
         collection.find_one_and_replace({'company': item['company']}, {'company': item['company'], 'rank': index + 1}, upsert=True)
-
-updateDB()
