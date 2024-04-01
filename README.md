@@ -1,8 +1,12 @@
-ShellHacks!! 2023
+# IntrinsIQ
 
+## Description
+Originally a hackathon project at Shellhacks 2023, IntrinsIQ is a web app designed to reveal stock insights through its intrinsic value calculations.
 IntrinsIQ calculates the intrinsic value of stocks within the S&P500 using a discounted cash flow model. 
 Essentially, we are projecting the company’s future cash flows and discounting them to the present value.
+Here is a [video](https://www.youtube.com/watch?v=M4zhRTAnLeE) explaining the features development process behind IntrinsIQ.
 
+## Intrinsic Value Formula
 intrinsic value = (dcf + cash and short term investments - total debt) / shares outstanding
 
 This calculation is useful for finding potentially undervalued stocks that will perform well in the future in the face of temporary market conditions. 
@@ -18,7 +22,6 @@ Some of them include:
 We also suffered from other limitations, including the occasional occurrence of incomplete or uncleanable data. 
 In these few cases, we developed conservative approximations or simply omitted the data point.
 
-Here is a [video](https://www.youtube.com/watch?v=M4zhRTAnLeE) explaining the features development process behind IntrinsIQ.
-
-_Disclaimer: IntrinsIQ is not a financial advisor, nor is this meant to resemble any form of financial advice. 
+## Disclaimer
+_IntrinsIQ is not a financial advisor, nor is this meant to resemble any form of financial advice. 
 Please consult a certified financial advisor before making any investment decisions and carry out your own due diligence._
