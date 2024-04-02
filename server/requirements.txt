@@ -5,6 +5,9 @@ Flask[async]
 Flask-Cors
 requests
 beautifulsoup4
-pymongo
 gunicorn
 gevent
+google-cloud-firestore
+google-cloud-secret-manager
+firebase-admin
+google-auth
