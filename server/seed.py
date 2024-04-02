@@ -96,6 +96,3 @@ def updateDB():
         else:
             # If no matching document exists, create a new one
             collection.add({'company': item['company'], 'rank': index})
-
-
-updateDB()
