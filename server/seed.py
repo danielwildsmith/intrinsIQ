@@ -4,6 +4,7 @@ import yfinance as yf
 from db import db
 import math
 from firebase_admin.firestore import FieldFilter
+from firebase_admin import firestore
 
 companies = getCompanies()
 
@@ -76,23 +77,14 @@ def updateDB():
         except Exception as e:
             print(f'Error processing {company}: {e}')
 
-    collection = db.collection('rankings')
-
     sorted_rank_values = sorted(rankValues, key=lambda x: x['rankValue'], reverse=True)
     for index, item in enumerate(sorted_rank_values, start=1):
-        # Create a query for documents with a matching 'company'
-        query = collection.where('company', '==', item['company']).limit(1)
+        query = collection.where("company", "==", item['company']).order_by("date", direction=firestore.Query.DESCENDING).limit(1)
         docs = query.stream()
 
-        doc_found = None
         for doc in docs:
-            doc_found = doc
-            break
-
-        if doc_found:
-            # If the document exists, update it
-            doc_ref = collection.document(doc_found.id)
+            doc_ref = collection.document(doc.id)
             doc_ref.update({'rank': index})
-        else:
-            # If no matching document exists, create a new one
-            collection.add({'company': item['company'], 'rank': index})
+            break  # Since we're only interested in the most recent document, break after the first update
+
+updateDB()

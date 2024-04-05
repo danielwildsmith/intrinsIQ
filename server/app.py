@@ -1,19 +1,21 @@
 from flask import Flask, jsonify
-from datetime import datetime
+from flask_cors import CORS
 import os
 from firebase_admin.firestore import FieldFilter
+from firebase_admin import firestore
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "https://intrinsiq.vercel.app/"]}})
 from db import db
 
 @app.route('/')
 def hello_world():
     return 'IntrinsIQ API'
 
-@app.route('/stock/<company>', methods=['GET'])
+@app.route('/historical/<company>', methods=['GET'])
 async def getStock(company):
     company_stock_ref = db.collection('company_stock_data')
-    query_ref = company_stock_ref.where(filter=FieldFilter("company", "==", company)).stream()
+    query_ref = company_stock_ref.where(filter=FieldFilter("company", "==", company)).order_by("date", direction=firestore.Query.ASCENDING).stream()
 
     documents = []
     for doc in query_ref:
@@ -21,47 +23,11 @@ async def getStock(company):
 
     return jsonify(documents)
     
-@app.route('/intrinsic/<company>', methods=['GET'])
-async def getIntrinsicValue(company):
-    date_str = (datetime.now()).strftime('%Y-%m-%d')
-    
-    company_stock_ref = db.collection('company_stock_data')
-    
-    # Query for documents where `company` matches and `date` is yesterday
-    query_ref = company_stock_ref.where(filter=FieldFilter("company", "==", company)).where(filter=FieldFilter("date", "==", date_str)).limit(1).stream()
-    
-    document = None
-    for doc in query_ref:
-        document = doc.to_dict()
-        break  # Assuming there's only one document
-    
-    if document:
-        return jsonify(document)
-    else:
-        return jsonify({"error": "Document not found"}), 404
-
-@app.route('/rankings/<company>', methods=['GET'])
-async def getRanking(company):
-    rankings_ref = db.collection('rankings')
-    
-    # Query for documents where `company` matches
-    query_ref = rankings_ref.where(filter=FieldFilter("company", "==", company)).limit(1).stream()
-    
-    document = None
-    for doc in query_ref:
-        document = doc.to_dict()
-        break  # Assuming there's only one document per company
-    
-    if document:
-        return jsonify(document)
-    else:
-        return jsonify({"error": "Document not found"}), 404
-
 @app.route('/rankings', methods=['GET'])
 async def getRankings():
-    rankings_ref = db.collection('rankings')
+    company_stock_ref = db.collection('company_stock_data')
     
-    query_ref = rankings_ref.order_by('rank').stream()
+    query_ref = company_stock_ref.order_by("date", direction=firestore.Query.DESCENDING).limit(500).order_by("rank", direction=firestore.Query.ASCENDING).stream()
     
     documents = [doc.to_dict() for doc in query_ref]
     
