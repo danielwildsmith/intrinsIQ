@@ -5,8 +5,15 @@ from firebase_admin.firestore import FieldFilter
 from firebase_admin import firestore
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "https://intrinsiq.vercel.app/"]}})
 from db import db
+CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "https://intrinsiq.vercel.app/"]}})
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', 'https://intrinsiq.vercel.app')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 @app.route('/')
 def hello_world():
