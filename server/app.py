@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
 import os
+from dotenv import load_dotenv
+load_dotenv()
 from firebase_admin.firestore import FieldFilter
 from firebase_admin import firestore
 from seed import updateDB
@@ -33,7 +35,8 @@ async def getStock(company):
 
 @app.route('/update', methods=['POST'])
 async def updateDB(): 
-    if request.headers.get('Authorization') != os.getenv("AUTH_KEY"):
+    print(f"Auth Key: {os.getenv("AUTH_KEY")}")
+    if request.headers.get('AUTH') != os.getenv("AUTH_KEY"):
         abort(401)
 
     print("Updating DB...")
