@@ -38,7 +38,7 @@ def updateDB():
 
     for company in companies:
         try:
-            data = yf.download(company, period="1d", progress=False)
+            data = yf.download(company, period="7d", progress=False)
 
             price = data['Close'].iloc[0]
             date_str = data.index[0].strftime('%Y-%m-%d')
@@ -86,5 +86,3 @@ def updateDB():
             doc_ref = collection.document(doc.id)
             doc_ref.update({'rank': index})
             break  # Since we're only interested in the most recent document, break after the first update
-
-updateDB()
