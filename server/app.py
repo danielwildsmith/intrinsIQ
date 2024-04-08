@@ -34,8 +34,7 @@ async def getStock(company):
     return jsonify(documents)
 
 @app.route('/update', methods=['POST'])
-async def updateDB(): 
-    print(f"Auth Key: {os.getenv('AUTH_KEY')}")
+async def postNewData(): 
     if request.headers.get('AUTH') != os.getenv("AUTH_KEY"):
         abort(401)
 
