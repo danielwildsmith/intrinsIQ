@@ -39,7 +39,7 @@ async def postNewData():
         abort(401)
 
     print("Updating DB...")
-    await updateDB()
+    updateDB()
     return 'Update process finished', 200
     
 @app.route('/rankings', methods=['GET'])
