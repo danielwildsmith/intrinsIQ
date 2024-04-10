@@ -1,12 +1,18 @@
 # IntrinsIQ
+Originally a hackathon project at Shellhacks 2023, IntrinsIQ is a web app that functions as an initial screener for
+S&P 500 stock selections, calculating intrinsic values through the Yahoo Finance API for informed investing.
 
-## Description
-Originally a hackathon project at Shellhacks 2023, IntrinsIQ is a web app designed to reveal stock insights through its intrinsic value calculations.
+6 months after the hackathon, IntrinsIQ's utility was fully realized, with our portfolio of top 10 recommendations outperforming the S&P 500 market with 6 percent higher annualized returns. Because of this success, we decided to refine and deploy IntrinsIQ. 
+
+Here is a [video](https://www.youtube.com/watch?v=M4zhRTAnLeE) demonstration of our hackathon project. 
+
+## Installation and Usage
+See README.md within client and server folders.
+
+## Intrinsic Value Calculation
 IntrinsIQ calculates the intrinsic value of stocks within the S&P500 using a discounted cash flow model. 
 Essentially, we are projecting the company’s future cash flows and discounting them to the present value.
-Here is a [video](https://www.youtube.com/watch?v=M4zhRTAnLeE) explaining the features development process behind IntrinsIQ.
 
-## Intrinsic Value Formula
 intrinsic value = (dcf + cash and short term investments - total debt) / shares outstanding
 
 This calculation is useful for finding potentially undervalued stocks that will perform well in the future in the face of temporary market conditions. 
@@ -19,8 +25,7 @@ Some of them include:
 - Growth rate years 11-20 being following inflation
 - An average long term US inflation rate of 3.28%
 
-We also suffered from other limitations, including the occasional occurrence of incomplete or uncleanable data. 
-In these few cases, we developed conservative approximations or simply omitted the data point.
+One limitation of this calculation involves few companies missing due to incomplete or uncleanable data. 
 
 ## Disclaimer
 _IntrinsIQ is not a financial advisor, nor is this meant to resemble any form of financial advice. 
