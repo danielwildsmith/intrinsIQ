@@ -17,7 +17,7 @@ python app.py
 ### Required Configuration
 In `/server`, include a valid `serviceAccount.json` that can be generated within the Google Cloud project's `IAM Service Accounts`. 
 
-In `/server`, create a file called `env`. This file must contain:
+In `/server`, create a file called `.env`. This file must contain:
 ```
 ENVIRONMENT=dev
 ```
