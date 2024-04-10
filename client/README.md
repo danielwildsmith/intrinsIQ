@@ -15,7 +15,7 @@ npm run dev
 ```
 
 ### Required Configuration
-In `/client`, create a file called `env.local`. This file must contain:
+In `/client`, create a file called `.env.local`. This file must contain:
 ```
 NEXT_PUBLIC_SERVER_URL=http://localhost:5000
 ```
