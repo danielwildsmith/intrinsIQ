@@ -17,17 +17,20 @@ export const Header = ({path}: {path: string}) => {
         else router.push("/not-found");
     };
 
+    const isHomePage = path === "/";
+
     return (
     <>
-      <Flex direction={path === "/" ? "column" : "row"} align={"center"} w={"100%"} mt={5} pl={path === "/" ? "0px" : "40px"}>
-        <Flex fontSize={"40px"} fontWeight={"bold"} mb={3} justifyContent={"center"}>
+      <Flex flexDir={{base: "column", lg: isHomePage ? "column" : "row"}} align={"center"} justify="center" w={"100%"} mt={5} h={isHomePage ? "80vh" : "auto"}>
+        <Flex fontSize={"40px"} fontWeight={"bold"} mb={3} justifyContent={"center"} ml={{base: 0, lg: "20px"}}>
             <Link href={'/'}>
                 <span style={{color: '#33d778'}}>Intrins</span>
                 <span style={{color: '#FFFFFF'}}>IQ</span>
             </Link>
         </Flex>
-        <Flex w={"100%"} gap={3} justifyContent={"center"} mr={path === "/" ? "0px" : '200px'}>
-            <InputGroup maxW={{ base: "100%", md: "40%" }}>
+        <Flex w="100%" justify="center" mr={{base: 0, lg: "90px"}}>
+            <Flex w={{base: "90%", md: "90%"}} gap={3} justify="center">
+            <InputGroup maxW={"60%"}>
                 <Box w={"100%"}>
                     <form onSubmit={handleSubmit}>
                         <Input
@@ -42,18 +45,22 @@ export const Header = ({path}: {path: string}) => {
                 </Box>
             </InputGroup>
             <Stack>
-                <Box boxSize='30px' _hover={{cursor: 'pointer', borderBottom: '1px solid #FFD700'}} >
+                <Box boxSize='30px' _hover={{cursor: 'pointer'}} >
                     <Link href={'/rankings'}>
                         <Image src='/leaderBoardIcon.png' alt='Leaderboard icon' width={30} height={30} />
                     </Link>
                 </Box>
                 <Box h={'1px'} borderBottom={path == '/rankings' ? '2px solid #FFD700' : ''}/>
             </Stack>
-            <Box boxSize='30px' _hover={{cursor: 'pointer', borderBottom: '1px solid white'}} >
-                <Link href={'/about'}>
-                    <Image src='/function.png' alt='Function icon' width={30} height={30}/>
-                </Link>
-            </Box>
+            <Stack>
+                <Box boxSize='30px' _hover={{cursor: 'pointer'}} >
+                    <Link href={'/about'}>
+                        <Image src='/function.png' alt='Function icon' width={30} height={30}/>
+                    </Link>
+                </Box>
+                <Box h={'1px'} borderBottom={path == '/about' ? '2px solid white' : ''}/>
+            </Stack>
+            </Flex>
         </Flex>
       </Flex>
     </>

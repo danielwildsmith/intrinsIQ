@@ -6,7 +6,11 @@ import Header from "@/components/nav-header";
 import { Box, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
-const textStyle = { ml: 4, fontSize: 'lg', mb: 3.5 };
+const textStyle = {
+    ml: { base: 0, md: 4 },
+    fontSize: 'lg',
+    mb: 3.5,
+  };
 
 const IndentedText = ({ children, ml = 12, mb = 1 }: { children: React.ReactNode, ml?: number, mb?: number }) => (
     <Text ml={ml} fontSize={'lg'} mb={mb}>
@@ -35,7 +39,7 @@ export default function AboutPage() {
         <>
             <PageWrapper>
                 <Header path="/about" />
-                <Box px={'250px'} mt={6} color={'white'} pb={10} mb={3.5}>
+                <Box px={{base: "20px", lg: '250px'}} mt={6} color={'white'} pb={5}>
                     <Text fontSize={'2xl'} borderBottom={'1px solid white'} w={'fit-content'} mb={2}>
                         About This Project
                     </Text>
@@ -84,7 +88,6 @@ export default function AboutPage() {
                     <TeamMember name="Anton Salvador" link="https://www.linkedin.com/in/antoncsalvador/" />
                     <TeamMember name="Mathew Alangadan" link="https://www.linkedin.com/in/mathew-alangadan-38228727a/" />
                 </Box>
-                <Box mb={2} />
                 <Footer />
             </PageWrapper>
         </>

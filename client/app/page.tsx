@@ -3,7 +3,7 @@
 import PageWrapper from "@/components/animations"
 import { Footer } from "@/components/footer"
 import Header from "@/components/nav-header"
-import { Box } from "@chakra-ui/react"
+import { Box, Flex } from "@chakra-ui/react"
 import { useEffect } from "react"
 
 export default function Home() {
@@ -22,12 +22,12 @@ export default function Home() {
 
   return (
     <PageWrapper>
-    <main className="flex min-h-screen flex-col items-center justify-center">
-      <Box h={'100%'} w={'100%'} display={'flex'} flexDir={'column'} justifyContent={'center'} pb={5}>
-        <Header path="/"/>
-      </Box>
-      <Footer />
-    </main>
+      <main className="flex flex-col min-h-screen">
+        <Header path="/" />
+        {/* This Flex grows to push the footer down */}
+        <Flex flex="1" direction="column" justify="center" />
+        <Footer />
+      </main>
     </PageWrapper>
   )
 }

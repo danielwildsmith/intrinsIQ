@@ -36,7 +36,9 @@ export default function DynamicCompanyPage({ params }: { params: { company: stri
               <Heading fontSize={'32px'} color={'#FFFFFF'} mr={2}>{params.company}</Heading>
               <RankCard companyData={companyData[companyData.length - 1]}/>
             </Flex>
-            <RangeChart companyData={companyData}/>
+            <Flex w={{base: "100%", "md": "80%"}}>
+              <RangeChart companyData={companyData}/>
+            </Flex>
             <IntrinsicValueStat companyData={companyData[companyData.length - 1]}/>
           </>
         )}
