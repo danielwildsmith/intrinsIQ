@@ -15,8 +15,9 @@ CORS(app, resources={r"/*": {"origins": origins}})
 
 @app.after_request
 def after_request(response):
-    if request.headers['Origin'] in origins:
-        response.headers.add('Access-Control-Allow-Origin', request.headers['Origin'])
+    origin = request.headers.get('Origin')
+    if origin and origin in origins:
+        response.headers.add('Access-Control-Allow-Origin', origin)
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
         response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     return response
