@@ -7,20 +7,11 @@ from firebase_admin.firestore import FieldFilter
 from firebase_admin import firestore
 from seed import updateDB
 
-origins = ["http://localhost:3000", "https://intrinsiq.vercel.app/"]
+origins = ["http://localhost:3000", "https://intrinsiq.vercel.app"]
 
 app = Flask(__name__)
 from db import db
 CORS(app, resources={r"/*": {"origins": origins}})
-
-@app.after_request
-def after_request(response):
-    origin = request.headers.get('Origin')
-    if origin and origin in origins:
-        response.headers.add('Access-Control-Allow-Origin', origin)
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-    return response
 
 @app.route('/')
 def hello_world():
