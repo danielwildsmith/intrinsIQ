@@ -1,33 +1,21 @@
 "use client"
 
-import PageWrapper from "@/components/animations"
-import { Footer } from "@/components/footer"
-import Header from "@/components/nav-header"
-import { Box, Flex } from "@chakra-ui/react"
-import { useEffect } from "react"
+import PageWrapper from "@/components/animations";
+import { Footer } from "@/components/footer";
+import Header from "@/components/nav-header";
+import { Text } from "@chakra-ui/react";
 
-export default function Home() {
-  // Cold start time is slow, so i wake up server ASAP
-  useEffect(() => {
-    const wakeUpServer = async () => {
-      try {
-        await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/`);
-      } catch (error) {
-        console.error('Error waking up server:', error);
-      }
-    };
-
-    wakeUpServer();
-}, []); 
-
-  return (
-    <PageWrapper>
-      <main className="flex flex-col min-h-screen">
-        <Header path="/" />
-        {/* This Flex grows to push the footer down */}
-        <Flex flex="1" direction="column" justify="center" />
-        <Footer />
-      </main>
-    </PageWrapper>
-  )
-}
+export default function Custom404() {
+    return (
+      <>
+        <PageWrapper>
+          <main className="flex min-h-screen flex-col items-center">
+            <Header path="/not-found" />
+            <Text color={'white'} fontWeight={'bold'} textAlign={'center'} fontSize={'3xl'} mt={10} maxW={'60%'}>Not Found. Use company ticker symbol (ex. AAPL for Apple). Only S&P500 companies are included.</Text>
+            <Footer />
+          </main>
+        </PageWrapper>
+      </>
+    )
+  }
+  
