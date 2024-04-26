@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 from firebase_admin.firestore import FieldFilter
 from firebase_admin import firestore
-from seed import updateDB
+from seed import updateDB, updateRanks
 
 origins = ["http://localhost:3000", "https://intrinsiq.vercel.app"]
 
@@ -27,15 +27,6 @@ async def getStock(company):
         documents.append(doc.to_dict())
 
     return jsonify(documents)
-
-@app.route('/update', methods=['POST'])
-async def postNewData(): 
-    if request.headers.get('AUTH') != os.getenv("AUTH_KEY"):
-        abort(401)
-
-    print("Updating DB...")
-    updateDB()
-    return 'Update process finished', 200
     
 @app.route('/rankings', methods=['GET'])
 async def getRankings():
@@ -46,6 +37,24 @@ async def getRankings():
     documents = [doc.to_dict() for doc in query_ref]
     
     return jsonify(documents)
+
+@app.route('/update', methods=['POST'])
+async def postNewStockData(): 
+    if request.headers.get('AUTH') != os.getenv("AUTH_KEY"):
+        abort(401)
+
+    print("Updating DB...")
+    updateDB()
+    return 'Update process finished', 200
+
+@app.route('/rerank', methods=['POST'])
+async def postNewRankData(): 
+    if request.headers.get('AUTH') != os.getenv("AUTH_KEY"):
+        abort(401)
+
+    print("Reranking DB...")
+    updateRanks()
+    return 'Rerank process finished', 200
 
 if __name__ == '__main__':
     app.run(debug=True, port=os.getenv("PORT", default=5000))
