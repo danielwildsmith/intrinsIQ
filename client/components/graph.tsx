@@ -58,7 +58,7 @@ export const RangeChart = ({ companyData }: {companyData: CompanyStockData[]}) =
       areaSeries.setData(formattedData);
       intrinsicSeries.setData([
         { time: '2019-04-03', value: companyData[companyData.length - 1].intrinsicValue! },
-        { time: '2024-04-03', value: companyData[companyData.length - 1].intrinsicValue! },
+        { time: new Date().toISOString().split('T')[0], value: companyData[companyData.length - 1].intrinsicValue! },
       ]);
 
       const lastDate = new Date(companyData[companyData.length - 1].date);
