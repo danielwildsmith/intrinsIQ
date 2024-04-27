@@ -4,4 +4,5 @@ export type CompanyStockData = {
     price: number; 
     intrinsicValue: number | null;
     rank: string | null;
+    rankValue: number | null;
 };

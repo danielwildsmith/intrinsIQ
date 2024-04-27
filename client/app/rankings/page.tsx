@@ -49,21 +49,21 @@ export default function RankingsPage() {
                         <Box h={`100px`} w={'100px'} bg={'#D9D9D9'} borderRadius={'10px'} display={'flex'} flexDir={'column'} justifyContent={'center'} gap={0.5}>
                             <Text>2</Text> {/* This is hardcoded as 2 since we are directly accessing the second index */}
                             <Text>{rankingsData[1].company}</Text>
-                            <Text color={'#33d778'}>+${(rankingsData[1].intrinsicValue! - rankingsData[1].price).toFixed(2)}</Text>
+                            <Text color={'#2EC16C'}>+${(rankingsData[1].intrinsicValue! - rankingsData[1].price).toFixed(2)}</Text>
                         </Box>
                     )}
                     {rankingsData[0] && (
                         <Box h={`140px`} w={'100px'} bg={'white'} borderRadius={'10px'} display={'flex'} flexDir={'column'} justifyContent={'center'} gap={0.5}>
                             <Text>1</Text> {/* This is hardcoded as 2 since we are directly accessing the second index */}
                             <Text>{rankingsData[0].company}</Text>
-                            <Text color={'#33d778'}>+${(rankingsData[0].intrinsicValue! - rankingsData[0].price).toFixed(2)}</Text>
+                            <Text color={'#2EC16C'}>+${(rankingsData[0].intrinsicValue! - rankingsData[0].price).toFixed(2)}</Text>
                         </Box>
                     )}
                     {rankingsData[2] && (
                         <Box h={`120px`} w={'100px'} bg={'#D9D9D9'} borderRadius={'10px'} display={'flex'} flexDir={'column'} justifyContent={'center'} gap={0.5}>
                             <Text>3</Text> {/* This is hardcoded as 2 since we are directly accessing the second index */}
                             <Text>{rankingsData[2].company}</Text>
-                            <Text color={'#33d778'}>+${(rankingsData[2].intrinsicValue! - rankingsData[2].price).toFixed(2)}</Text>
+                            <Text color={'#2EC16C'}>+${(rankingsData[2].intrinsicValue! - rankingsData[2].price).toFixed(2)}</Text>
                         </Box>
                     )}
 
@@ -100,12 +100,12 @@ export default function RankingsPage() {
                                         <Td>{item.rank}</Td>
                                         <Td>
                                             <NextLink href={`/${encodeURIComponent(item.company)}`} passHref>
-                                                <Link color="#33d778" isExternal={false}>{item.company}</Link>
+                                                <Link color="#56b7f0" isExternal={false}>{item.company}</Link>
                                             </NextLink>
                                         </Td>
                                         <Td isNumeric>${item.price.toFixed(2)}</Td>
                                         <Td isNumeric>${item.intrinsicValue!.toFixed(2)}</Td>
-                                        <Td isNumeric>${(item.intrinsicValue! - item.price).toFixed(2)}</Td>
+                                        <Td isNumeric style={{ color: item.rankValue! < 0 ? '#FF0000' : '#33d778' }}>{item.rankValue}%</Td>
                                     </Tr>
                                 ))}
                             </Tbody>
