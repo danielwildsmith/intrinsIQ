@@ -57,24 +57,21 @@ def updateRanks():
     collection = db.collection('company_stock_data')
     latest_docs = []
 
+    # Retrieve the latest document for each company that has a rankValue
     for company in companies:
-        query = collection.where(filter=FieldFilter("company", "==", company)).order_by('date', direction=firestore.Query.DESCENDING).limit(1)
+        query = collection.where('company', '==', company).order_by('date', direction=firestore.Query.DESCENDING).limit(1)
         docs = query.stream()
 
         for doc in docs:
             doc_dict = doc.to_dict()
-            if 'rankValue' in doc_dict:  # Ensure 'rankValue' exists
-                latest_docs.append(doc_dict)
+            # Check if the 'rankValue' exists; if it does, add to list to sort later
+            if 'rankValue' in doc_dict:
+                latest_docs.append((doc.id, doc_dict))
 
-    # Sort the documents that have 'rankValue'
-    sorted_rank_values = sorted(latest_docs, key=lambda x: x['rankValue'], reverse=True)
+    # Sort documents by their 'rankValue'
+    sorted_rank_values = sorted(latest_docs, key=lambda x: x[1]['rankValue'], reverse=True)
 
-    # Update ranks
-    for index, item in enumerate(sorted_rank_values, start=1):
-        query = collection.where('company', '==', item['company']).order_by("date", direction=firestore.Query.DESCENDING).limit(1)
-        docs = query.stream()
-
-        for doc in docs:
-            doc_ref = collection.document(doc.id)
-            doc_ref.update({'rank': index})
-            break
+    # Update the rank in the documents
+    for index, (doc_id, doc_data) in enumerate(sorted_rank_values, start=1):
+        doc_ref = collection.document(doc_id)  # Directly use the document ID
+        doc_ref.update({'rank': index})
